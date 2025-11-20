@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c931c3d71261e24cae937001329667a, type: 3}
+  m_Name: Game Params Config
+  m_EditorClassIdentifier: 
+  errorMaterial: {fileID: 2100000, guid: e6577227a3108af4ea0466093df7106e, type: 2}
+  selectionMaterial: {fileID: 2100000, guid: 3063a5c8c3f648c4c98302f46cb89873, type: 2}
+  resourcesList:
+  - {fileID: 11400000, guid: 31fdac558563f3d4ba25219d43a0ef8e, type: 2}
+  - {fileID: 11400000, guid: 24b9379d9b986984290559c727b6cc73, type: 2}
+  - {fileID: 11400000, guid: 13624ddaa83ab71418e7996a052a86db, type: 2}
