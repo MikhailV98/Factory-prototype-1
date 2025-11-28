@@ -32,5 +32,4 @@ public class ProductBuildingPanel : MonoBehaviour, IPointerEnterHandler,IPointer
         PlayerController.Instance.isMouseOnUI = false;
         Debug.Log("mouse out of panel");
     }
-
 }
