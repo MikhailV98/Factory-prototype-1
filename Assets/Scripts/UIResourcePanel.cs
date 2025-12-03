@@ -8,10 +8,12 @@ public class UIResourcePanel : MonoBehaviour
 {
     //  Панель отображения ресурсов
 
-    [SerializeField] GameObject resourcePlace;
+    [SerializeField] GameObject resourceWidget;
     [SerializeField] TextMeshProUGUI hideButtonText;
     [SerializeField] RectTransform resourceListPanel;
     RectTransform rectTransform;
+    [SerializeField] TextMeshProUGUI storageText;
+    [SerializeField] Slider storageBar;
 
     List<TextMeshProUGUI> resourceCountersList;
 
@@ -30,12 +32,14 @@ public class UIResourcePanel : MonoBehaviour
     {
         resourceCountersList = new List<TextMeshProUGUI>();
         resourceBank = storage;
-        foreach(Resource r in GameManager.Instance.gameParams.resourcesList)
-            AddResourcePanel(r);
+        foreach (Resource r in GameManager.Instance.gameParams.resourcesList)
+            if(r.CanBeStored)
+                AddResourcePanel(r);
+        storage.ApplyResourcePanel(this);
     }
     void AddResourcePanel(Resource r)
     {
-        GameObject newResourcePanel = Instantiate(resourcePlace, resourceListPanel);
+        GameObject newResourcePanel = Instantiate(resourceWidget, resourceListPanel);
 
         RectTransform newResourceTransform = newResourcePanel.transform as RectTransform;
         newResourceTransform.anchoredPosition = new Vector2(0, -25 - 50 * resourceCountersList.Count);
@@ -64,12 +68,12 @@ public class UIResourcePanel : MonoBehaviour
         }
     }
     //  Отображение и скрытие панели
-    public void ShowPanel()
+    public void ShowPanel() => rectTransform.anchoredPosition = new Vector2(rectTransform.rect.width / 2, 60);
+    public void HidePanel() => rectTransform.anchoredPosition = new Vector2(-rectTransform.rect.width / 2, 60);
+
+    public void UpdateStorageBar(int count, int maxCount)
     {
-        rectTransform.anchoredPosition = new Vector2(100,0);
-    }
-    public void HidePanel()
-    {
-        rectTransform.anchoredPosition = new Vector2(-100, 0);
+        storageText.text = count + "/" + maxCount;
+        storageBar.value = (float)count / (float)maxCount;
     }
 }

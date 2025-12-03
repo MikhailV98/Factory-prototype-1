@@ -739,7 +739,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultMaterial: {fileID: 2100000, guid: fc1565d163818d54a823ab60f994825a, type: 2}
-  currentResource: {fileID: 11400000, guid: 31fdac558563f3d4ba25219d43a0ef8e, type: 2}
+  buildingType: 0
+  currentResource: {fileID: 11400000, guid: 4fdb74bddd71e614190256c7cbb2201c, type: 2}
   resourcesPerSecond: 2
 --- !u!114 &3362768109232429705
 MonoBehaviour:
@@ -833,7 +834,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 6764673944313577212}
   m_HandleRect: {fileID: 0}

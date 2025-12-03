@@ -8,6 +8,7 @@ public class Building : MonoBehaviour
     protected MeshRenderer meshRenderer;
 
     [SerializeField] Material defaultMaterial;  //  Необходим для возвращения зданию цвета после снятия выделения и при строительстве
+    public BuildingTypes buildingType;
 
     void Awake()
     {
@@ -19,10 +20,14 @@ public class Building : MonoBehaviour
     public virtual void OnSelect() => meshRenderer.material = GameManager.Instance.gameParams.selectionMaterial;
     public virtual void OnDeselect() => meshRenderer.material = defaultMaterial;
 
-    public virtual void ChangeResource(Resource newResource) { }
-
-    public virtual void DeleteBuilding()
+    public virtual void DeleteBuilding() => Destroy(this.gameObject);
+    public virtual void MoveBuilding()
     {
-        Destroy(this.gameObject);
+        OnDeselect();
+        this.gameObject.AddComponent<BuildingHelper>();
+        PlayerController.Instance.PrepareToBuild(this);
+        GetComponent<BuildingHUD>().enabled = false;
+        this.enabled = false;
     }
+    public virtual void OnPlaced() { }
 }

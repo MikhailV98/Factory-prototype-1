@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ProductBuildingDropDown : TMP_Dropdown
+public class UIResourceDropdown : TMP_Dropdown
 {
-    //  Костыльный дропдаун чтобы при взаимодействии с выпадающим списком не считывались другие нажатия мышкой
-
+    //  Dropdown для выбора ресурсов
     protected override void Start()
     {
         base.Start();

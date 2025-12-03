@@ -9,9 +9,11 @@ public class SellerBuilding : Building
     SellerBuildingUI ui;
 
     public Resource currentResource;
-    [SerializeField] float resourcesPerSecond = 2;
-    float timeToSale; //  Скорость продажи ресурсов
+    [SerializeField] float resourcesPerSecond = 2; //  Скорость продажи ресурсов
+    float timeToSale = 1;
     float timer = 0;
+    public bool isWorking = true;
+    bool wereWorkingBeforeMoving = true;
     public float Timer
     {
         get => timer;
@@ -28,16 +30,18 @@ public class SellerBuilding : Building
         ui = GetComponent<SellerBuildingUI>();
         UpdateUI();
 
-        uiPanel = PlayerController.Instance.sellerBuildingPanelUI;
         timeToSale = 1 / resourcesPerSecond;
     }
 
     private void Update()
     {
-        if (isSelling)
-            Selling();
-        else
-            CheckIsSellingAvailable();
+        if (isWorking && currentResource.CanBeStored)
+        {
+            if (isSelling)
+                Selling();
+            else
+                CheckIsSellingAvailable();
+        }
     }
     void CheckIsSellingAvailable()
     {
@@ -71,13 +75,21 @@ public class SellerBuilding : Building
     {
         Timer = 0;
     }
-    void UpdateProgressionSlider() => ui.UpdateSlider(Timer / timeToSale);
+    void UpdateProgressionSlider()
+    {
+        float value = Timer / timeToSale;
+        ui.UpdateSlider(value);
+        if (uiPanel.GetCurrentBuilding() == this)
+            uiPanel.UpdateProgressionSlider(value);
+    }
     void UpdateUI() => ui.UpdateUI(currentResource);
 
     //  При выделении зданий также открывается панель
     public override void OnSelect()
     {
         base.OnSelect();
+        uiPanel = PlayerController.Instance.sellerBuildingPanelUI;
+        uiPanel.SetCurrentBuilding(this);
         ActivateUIPanel();
     }
     public override void OnDeselect()
@@ -88,23 +100,55 @@ public class SellerBuilding : Building
 
     void ActivateUIPanel()
     {
+        RectTransform uiRectTransform = (RectTransform)uiPanel.transform;
+        Vector3 position = Camera.main.WorldToScreenPoint(transform.position) + new Vector3(300, 0, 100);
+        uiRectTransform.position = position;
         uiPanel.gameObject.SetActive(true);
         uiPanel.UpdatePanel(currentResource);
+        uiPanel.UpdateProgressionSlider(Timer / timeToSale);
     }
 
     void DeactivateUIPanel() => uiPanel.gameObject.SetActive(false);
 
-    override public void ChangeResource(Resource newResource)
+    public void ChangeResource(Resource newResource)
     {
         currentResource = newResource;
         UpdateUI();
         uiPanel.UpdatePanel(currentResource);
         ResetTimer();
     }
+    public void SwitchSellingState()
+    {
+        if (isWorking)
+            PauseSelling();
+        else
+            ContinueSelling();
+    }
+    public void PauseSelling()
+    {
+        isWorking = false;
+    }
+    public void ContinueSelling()
+    {
+        isWorking = true;
+    }
 
     public override void DeleteBuilding()
     {
         DeactivateUIPanel();
         base.DeleteBuilding();
+    }
+
+    public override void MoveBuilding()
+    {
+        wereWorkingBeforeMoving = isWorking;
+        PauseSelling();
+        base.MoveBuilding();
+    }
+    public override void OnPlaced()
+    {
+        base.OnPlaced();
+        if (wereWorkingBeforeMoving)
+            ContinueSelling();
     }
 }

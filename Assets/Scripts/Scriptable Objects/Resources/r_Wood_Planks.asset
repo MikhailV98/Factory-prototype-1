@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 364ba479a8e8a874eb4cdbea6d627488, type: 3}
   m_Name: r_Wood_Planks
   m_EditorClassIdentifier: 
+  CanBeStored: 1
   Image: {fileID: 21300000, guid: af1481c1f93d38f44af8d9e67f72957f, type: 3}
   Name: Wood Planks
   Cost: 1
-  resourceHardness: 1

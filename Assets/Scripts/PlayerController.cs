@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
     public Transform buildingsContainer;
     GameObject currentBuilding;
     BuildingHelper currentBuildingHelper;
-    public ProductBuildingPanel productBuildingPanelUI;
     public SellerBuildingPanel sellerBuildingPanelUI;
+    public CreatorBuildingUI creatorBuildingUI;
 
     public Building selectedBuilding;
 
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     //public GameParams gp;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (Instance == null)
             Instance = this;
@@ -84,7 +84,6 @@ public class PlayerController : MonoBehaviour
                 }
             default:
                 {
-                    Debug.LogError("Unknown player state");
                     break;
                 }
         }
@@ -97,8 +96,7 @@ public class PlayerController : MonoBehaviour
             if (clickedBuilding != selectedBuilding)
             {
                 DeselectBuilding();
-                selectedBuilding = clickedBuilding;
-                selectedBuilding.OnSelect();
+                SelectBuilding(clickedBuilding);
             }
         }
         else
@@ -106,6 +104,12 @@ public class PlayerController : MonoBehaviour
             if (!isMouseOnUI)
                 DeselectBuilding();
         }
+    }
+    void SelectBuilding(Building building)
+    {
+        
+        selectedBuilding = building;
+        selectedBuilding.OnSelect();
     }
     void DeselectBuilding()
     {
@@ -116,6 +120,7 @@ public class PlayerController : MonoBehaviour
             selectedBuilding = null;
         }
     }
+    //  Отмена постройки при нажатии ПКМ
     public void MouseInputSecondActionHandler()
     {
         if (currentState == PlayerState.Building)
@@ -129,9 +134,13 @@ public class PlayerController : MonoBehaviour
         if (currentBuildingHelper.CheckCollisions())
         {
             currentBuilding.transform.SetParent(buildingsContainer);
-            currentBuilding.GetComponent<Building>().enabled = true;
-            currentBuilding.GetComponent<BuildingUI>().enabled = true;
+            Building newBuilding = currentBuilding.GetComponent<Building>();
+            newBuilding.enabled = true;
+            currentBuilding.GetComponent<BuildingHUD>().enabled = true;
+            newBuilding.OnPlaced();
             ReleaseBuilding();
+
+            SelectBuilding(newBuilding);
         }
     }
     void ReleaseBuilding()
@@ -155,7 +164,7 @@ public class PlayerController : MonoBehaviour
             return null;
         }
     }
-    Vector3 GetMousePositionInScene()
+    public Vector3 GetMousePositionInScene()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit raycastHit;
@@ -181,7 +190,7 @@ public class PlayerController : MonoBehaviour
             currentBuildingHelper.ChangeMaterial(m);
         }
     }
-
+    //  Для префабов
     public void PrepareToBuild(GameObject building)
     {
         if (currentState != PlayerState.Building)
@@ -191,8 +200,45 @@ public class PlayerController : MonoBehaviour
             currentBuildingHelper = currentBuilding.GetComponent<BuildingHelper>();
         }
     }
+    //  Для готовых зданий
+    public void PrepareToBuild(Building building)
+    {
+        if (currentState != PlayerState.Building)
+        {
+            currentState = PlayerState.Building;
+            currentBuilding = building.gameObject;
+            currentBuildingHelper = currentBuilding.GetComponent<BuildingHelper>();
+        }
+    }
 
-    public void ChangeResourceOnSelectedBuilding(Resource r) => selectedBuilding.ChangeResource(r);
+    public void ChangeRecipeOnSelectedBuilding(int numberInRecipesList)
+    {
+        CreatorBuilding building;
+        if(building = selectedBuilding as CreatorBuilding)
+        {
+            Recipe newRecipe = building.currentRecipe;
+            switch (building.buildingType)
+            {
+                case BuildingTypes.Creator:
+                    {
+                        newRecipe = GameManager.Instance.gameParams.creatorRecipes[numberInRecipesList];
+                        break;
+                    }
+                case BuildingTypes.Connector:
+                    {
+                        newRecipe = GameManager.Instance.gameParams.connectorRecipes[numberInRecipesList];
+                        break;
+                    }
+            }
+            building.ChangeRecipe(newRecipe);
+        }
+    }
+    public void ChangeResourceOnSelectedBuilding(Resource resource)
+    {
+        SellerBuilding building;
+        if (building = selectedBuilding as SellerBuilding)
+            building.ChangeResource(resource);
+    }
 
     public void DeleteSelectedBuilding() => selectedBuilding.DeleteBuilding();
 }

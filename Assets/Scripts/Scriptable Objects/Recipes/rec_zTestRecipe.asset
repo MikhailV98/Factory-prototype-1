@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8caeaa6570618c47be110e2c5059ffd, type: 3}
+  m_Name: rec_zTestRecipe
+  m_EditorClassIdentifier: 
+  CanBeProduced: 1
+  recipeType: 1
+  InResources:
+  - resource: {fileID: 11400000, guid: ba57f40c7d053154fadd1cdad63089d1, type: 2}
+    count: 555
+  - resource: {fileID: 11400000, guid: 31fdac558563f3d4ba25219d43a0ef8e, type: 2}
+    count: 555
+  - resource: {fileID: 11400000, guid: d6b396919c6dbcb4ba76f7c9e8edde9c, type: 2}
+    count: 555
+  - resource: {fileID: 11400000, guid: 13624ddaa83ab71418e7996a052a86db, type: 2}
+    count: 555
+  - resource: {fileID: 11400000, guid: af377af7b253c3e40a0379fda04de689, type: 2}
+    count: 555
+  OutResource:
+    resource: {fileID: 11400000, guid: dd06b666d065bc54da22a0cd07465d07, type: 2}
+    count: 1
+  RecipeHardness: 1

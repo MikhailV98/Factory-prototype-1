@@ -20,7 +20,6 @@ public class BuildingHelper : MonoBehaviour
         if (collision.gameObject.CompareTag("Building"))
         {
             isOutOfCollisions = false;
-            Debug.Log("I am colliding");
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -29,8 +28,6 @@ public class BuildingHelper : MonoBehaviour
         {
             isOutOfCollisions = true;
             ReturnDefaultMaterial();
-
-            Debug.Log("I am free");
         }
     }
 

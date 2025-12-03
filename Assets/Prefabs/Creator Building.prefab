@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 8198253590026708610}
   - component: {fileID: 1857582168884804763}
   - component: {fileID: -1168939718498795367}
-  - component: {fileID: 4310642413748093578}
-  - component: {fileID: 7787364837039020056}
+  - component: {fileID: 6549476997308171042}
+  - component: {fileID: -1142456308866299196}
   m_Layer: 0
   m_Name: Creator Building
   m_TagString: Building
@@ -150,22 +150,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &4310642413748093578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 459863595291819083}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e183df650f6b01499c31bd48487df0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: 6c7d03e306977fe4f820e89d3de85996, type: 2}
-  productingRecource: {fileID: 11400000, guid: 31fdac558563f3d4ba25219d43a0ef8e, type: 2}
-  buildingPower: 1
---- !u!114 &7787364837039020056
+--- !u!114 &6549476997308171042
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,10 +159,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 459863595291819083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cefb2d4f0f43e44a900ae420f8e3076, type: 3}
+  m_Script: {fileID: 11500000, guid: dab84ef9d8619844b9b9c19f7687a52a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testText: {fileID: 0}
+  defaultMaterial: {fileID: 2100000, guid: 6c7d03e306977fe4f820e89d3de85996, type: 2}
+  buildingType: 0
+  buildingHUD: {fileID: 0}
+  buildingUI: {fileID: 0}
+  currentRecipe: {fileID: 11400000, guid: 7b1d3a5340aca1e4d913e2b10f7a677f, type: 2}
+  buildingPower: 1
+--- !u!114 &-1142456308866299196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459863595291819083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ff96248408be742941f3583a9d2d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   resourceImage: {fileID: 3871486814407303243}
   resourceProgressBar: {fileID: 477916469137965419}
 --- !u!1 &1181605466201023548
@@ -758,7 +760,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 75943525910231266}
   m_HandleRect: {fileID: 0}
@@ -766,7 +768,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.488
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

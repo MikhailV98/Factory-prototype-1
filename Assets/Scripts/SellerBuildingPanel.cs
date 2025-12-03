@@ -10,11 +10,11 @@ public class SellerBuildingPanel : MonoBehaviour, IPointerEnterHandler, IPointer
     //  Скрипт взаимодействия с панелью производящего здания
     [SerializeField] Image resourceImage;
     [SerializeField] TextMeshProUGUI resourceText;
-    [SerializeField] ProductBuildingDropDown dropdown;
-
+    [SerializeField] UIResourceDropdown dropdown;
+    [SerializeField] TextMeshProUGUI pauseButtonText;
+    [SerializeField] Slider progressionSlider;
     [SerializeField] TextMeshProUGUI moneyText;
-
-    //  Костыль - для поиска ресурса по названию при выборе в дропдауне
+    SellerBuilding currentBuilding;
 
     public void UpdatePanel(Resource resource)
     {
@@ -22,17 +22,36 @@ public class SellerBuildingPanel : MonoBehaviour, IPointerEnterHandler, IPointer
         resourceText.text = resource.Name;
         moneyText.text = resource.Cost.ToString();
         dropdown.value = GameManager.FindCurrentResourceNumberByName(resource.Name);
+        UpdatePauseButton();
     }
-
+    public void SetCurrentBuilding(SellerBuilding newBuilding)
+        => currentBuilding = newBuilding;
+    public SellerBuilding GetCurrentBuilding()
+        => currentBuilding;
+    public void UpdateProgressionSlider(float value)
+        => progressionSlider.value = value;
     public void OnPointerEnter(PointerEventData eventData)
     {
         PlayerController.Instance.isMouseOnUI = true;
-        Debug.Log("mouse on panel");
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         PlayerController.Instance.isMouseOnUI = false;
-        Debug.Log("mouse out of panel");
     }
-
+    void UpdatePauseButton()
+    {
+        if (currentBuilding.isWorking)
+            pauseButtonText.text = "Pause";
+        else pauseButtonText.text = "Continue";
+    }
+    public void SwitchStateOnCurrentBuilding()
+    {
+        currentBuilding.SwitchSellingState();
+        UpdatePauseButton();
+    }
+    public void MoveBuildingClick()
+    {
+        currentBuilding.MoveBuilding();
+        PlayerController.Instance.isMouseOnUI = false;
+    }
 }

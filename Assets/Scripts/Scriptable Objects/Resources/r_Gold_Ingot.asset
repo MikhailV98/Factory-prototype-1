@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 364ba479a8e8a874eb4cdbea6d627488, type: 3}
   m_Name: r_Gold_Ingot
   m_EditorClassIdentifier: 
+  CanBeStored: 1
   Image: {fileID: 21300000, guid: 873ff4394e887234b976f72f2d695bbd, type: 3}
   Name: Gold Ingot
   Cost: 5
-  resourceHardness: 2

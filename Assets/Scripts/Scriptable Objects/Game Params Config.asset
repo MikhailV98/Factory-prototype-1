@@ -14,7 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   errorMaterial: {fileID: 2100000, guid: e6577227a3108af4ea0466093df7106e, type: 2}
   selectionMaterial: {fileID: 2100000, guid: 3063a5c8c3f648c4c98302f46cb89873, type: 2}
+  emptyResource: {fileID: 11400000, guid: 4fdb74bddd71e614190256c7cbb2201c, type: 2}
   resourcesList:
-  - {fileID: 11400000, guid: 31fdac558563f3d4ba25219d43a0ef8e, type: 2}
+  - {fileID: 11400000, guid: 4fdb74bddd71e614190256c7cbb2201c, type: 2}
+  - {fileID: 11400000, guid: e88bf20e891c5074eabb334cf6e4396d, type: 2}
+  - {fileID: 11400000, guid: ba57f40c7d053154fadd1cdad63089d1, type: 2}
   - {fileID: 11400000, guid: 24b9379d9b986984290559c727b6cc73, type: 2}
+  - {fileID: 11400000, guid: cae24ec7734adcb4688d9e27e1dfb846, type: 2}
+  - {fileID: 11400000, guid: 31fdac558563f3d4ba25219d43a0ef8e, type: 2}
+  - {fileID: 11400000, guid: af377af7b253c3e40a0379fda04de689, type: 2}
+  - {fileID: 11400000, guid: d6b396919c6dbcb4ba76f7c9e8edde9c, type: 2}
   - {fileID: 11400000, guid: 13624ddaa83ab71418e7996a052a86db, type: 2}
+  - {fileID: 11400000, guid: dd06b666d065bc54da22a0cd07465d07, type: 2}
+  creatorRecipes:
+  - {fileID: 11400000, guid: 7b1d3a5340aca1e4d913e2b10f7a677f, type: 2}
+  - {fileID: 11400000, guid: 00142ded629b3cd46aae604b2ce97ef6, type: 2}
+  - {fileID: 11400000, guid: ac017823a9f83714db638d4cab52bc27, type: 2}
+  - {fileID: 11400000, guid: 1e7722319ca844d44beb33b46276259b, type: 2}
+  - {fileID: 11400000, guid: 596c5d66d0be4db4d89b861b8314453e, type: 2}
+  connectorRecipes:
+  - {fileID: 11400000, guid: 7b1d3a5340aca1e4d913e2b10f7a677f, type: 2}
+  - {fileID: 11400000, guid: 4de67e11c7cebe44a843f13b465f56d4, type: 2}
+  - {fileID: 11400000, guid: 1b17d0de14322354d878aa0cfe54d0c3, type: 2}
+  - {fileID: 11400000, guid: ee45104295e498843bb16f1e4ca15888, type: 2}
+  - {fileID: 11400000, guid: ef60741baabe77d4f9ab8f257a3d1656, type: 2}
+  - {fileID: 11400000, guid: 52bd57c7dbb2d9b41bdfb1b2f7d989dc, type: 2}

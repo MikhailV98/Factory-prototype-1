@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            resourceBank = new ResourceStorage();
+            resourceBank = new ResourceStorage(resourceBankCapacity);
         }
         else
         {
@@ -48,6 +48,16 @@ public class GameManager : MonoBehaviour
         }
         else return false;
     }
+    public bool AddResourceToBank(Resource resource, int count)
+    {
+        if (resourceBank.GetTotalCount() < resourceBankCapacity)
+        {
+            resourceBank.AddResource(resource, count);
+            return true;
+        }
+        else return false;
+    }
+
     void UpdateResourceUI()
     {
         moneyText.text = moneyCount.ToString();
@@ -55,6 +65,23 @@ public class GameManager : MonoBehaviour
 
     public bool TryTakeResourceFromBank(Resource r) => resourceBank.TakeResource(r, 1);
     public bool TryTakeResourceFromBank(Resource r, int count) => resourceBank.TakeResource(r, count);
+    public bool TryTakeListOfResourceFromBank(List<Recipe.RecipeResource> resources)
+    {
+        //  Проверяем, все ли ресурсы на месте
+        bool b = true;
+        foreach(Recipe.RecipeResource r in resources)
+        {
+            if (!resourceBank.HasResource(r.resource, r.count))
+                b = false;
+        }
+        //  Если все ресурсы есть, забираем их
+        if (b)
+        {
+            foreach (Recipe.RecipeResource r in resources)
+                resourceBank.TakeResource(r.resource, r.count);
+        }
+        return b;
+    }
 
     public void AddMoney(int newMoney)
     {
