@@ -11,38 +11,42 @@ public class CreatorDropdown : TMP_Dropdown
     }
 
     //  Автозаполнение выпадающего списка всеми ресурсами
-    public void FillDropDownList(BuildingTypes buildingType)
+    public void FillDropDownList(BuildingTypes buildingType, Recipe recipe)
     {
         switch (buildingType)
         {
             case BuildingTypes.Creator:
                 {
-                    FillDropdownListForCreator();
+                    FillDropdownListForCreator(recipe);
                     break;
                 }
             case BuildingTypes.Connector:
                 {
-                    FillDropdownListForConnector();
+                    FillDropdownListForConnector(recipe);
                     break;
                 }
         }
     }
 
-    void FillDropdownListForCreator()
+    void FillDropdownListForCreator(Recipe currentRecipe)
     {
         List<OptionData> newList = new List<OptionData>();
         foreach (Recipe r in GameManager.Instance.gameParams.creatorRecipes)
         {
             newList.Add(new OptionData(r.OutResource.resource.Name, r.OutResource.resource.Image));
+            if (currentRecipe == r)
+                value = newList.Count - 1;
         }
         options = newList;
     }
-    void FillDropdownListForConnector()
+    void FillDropdownListForConnector(Recipe currentRecipe)
     {
         List<OptionData> newList = new List<OptionData>();
         foreach (Recipe r in GameManager.Instance.gameParams.connectorRecipes)
         {
             newList.Add(new OptionData(r.OutResource.resource.Name, r.OutResource.resource.Image));
+            if (currentRecipe == r)
+                value = newList.Count - 1;
         }
         options = newList;
     }

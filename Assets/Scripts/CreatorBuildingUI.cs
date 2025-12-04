@@ -12,7 +12,8 @@ public class CreatorBuildingUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] UIRecipeDisplayer creatorRecipeDisplayer;
     [SerializeField] UIRecipeDisplayer connectorRecipeDisplayer;
     [SerializeField] TextMeshProUGUI pauseButtonText;
-    [SerializeField] Slider progressionSlider;
+    [SerializeField] UIImageProgressBar creatorImageProgressBar;
+    [SerializeField] UIImageProgressBar connectorImageProgressBar;
     CreatorBuilding currentBuilding;
 
     //  Поднятие и снятие флажков при взаимодействии пользователя с панелью
@@ -33,12 +34,26 @@ public class CreatorBuildingUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void UpdateUI(Recipe recipe)
     {
         nameText.text = currentBuilding.buildingType.ToString();
-        dropdown.FillDropDownList(currentBuilding.buildingType);
+        dropdown.FillDropDownList(currentBuilding.buildingType, recipe);
         UpdateRecipeDisplayer(recipe);
         UpdatePauseButton();
     }
     public void UpdateProgressionSlider(float value)
-        => progressionSlider.value = value;
+    {
+        switch(currentBuilding.buildingType)
+        {
+            case BuildingTypes.Creator:
+                {
+                    creatorImageProgressBar.ProgressionValue = value;
+                    break;
+                }
+            case BuildingTypes.Connector:
+                {
+                    connectorImageProgressBar.ProgressionValue = value;
+                    break;
+                }
+        }
+    }
     void UpdatePauseButton()
     {
         if (currentBuilding.isWorking)
