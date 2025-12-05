@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isMouseOnUI = false;
 
+    public UnityEvent onBuildingCreated = new UnityEvent();
+    public UnityEvent onBuildingDestroyed = new UnityEvent();
 
     //public GameParams gp;
 
@@ -125,6 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         if (currentState == PlayerState.Building)
         {
+            GameManager.Instance.ReturnCost(currentBuilding.GetComponent<Building>());
             Destroy(currentBuilding);
             ReleaseBuilding();
         }
@@ -140,6 +143,7 @@ public class PlayerController : MonoBehaviour
             newBuilding.OnPlaced();
             ReleaseBuilding();
 
+            onBuildingCreated.Invoke();
             SelectBuilding(newBuilding);
         }
     }
@@ -240,6 +244,15 @@ public class PlayerController : MonoBehaviour
             building.ChangeResource(resource);
     }
 
-    public void DeleteSelectedBuilding() => selectedBuilding.DeleteBuilding();
+    public void DeleteSelectedBuilding()
+    {
+        StartCoroutine(DeletingCurrentBuilding());
+    }
+    IEnumerator DeletingCurrentBuilding()
+    {
+        selectedBuilding.DeleteBuilding();
+        yield return new WaitForNextFrameUnit();
+        onBuildingDestroyed.Invoke();
+    }
 }
 

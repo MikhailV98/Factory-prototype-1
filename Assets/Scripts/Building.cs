@@ -20,7 +20,10 @@ public class Building : MonoBehaviour
     public virtual void OnSelect() => meshRenderer.material = GameManager.Instance.gameParams.selectionMaterial;
     public virtual void OnDeselect() => meshRenderer.material = defaultMaterial;
 
-    public virtual void DeleteBuilding() => Destroy(this.gameObject);
+    public virtual void DeleteBuilding()
+    {
+        Destroy(this.gameObject);
+    }
     public virtual void MoveBuilding()
     {
         OnDeselect();

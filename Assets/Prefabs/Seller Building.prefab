@@ -739,9 +739,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultMaterial: {fileID: 2100000, guid: fc1565d163818d54a823ab60f994825a, type: 2}
-  buildingType: 0
+  buildingType: 2
   currentResource: {fileID: 11400000, guid: 4fdb74bddd71e614190256c7cbb2201c, type: 2}
   resourcesPerSecond: 2
+  isWorking: 1
 --- !u!114 &3362768109232429705
 MonoBehaviour:
   m_ObjectHideFlags: 0

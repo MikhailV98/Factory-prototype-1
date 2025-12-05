@@ -12,6 +12,7 @@ public class CreatorBuildingUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] UIRecipeDisplayer creatorRecipeDisplayer;
     [SerializeField] UIRecipeDisplayer connectorRecipeDisplayer;
     [SerializeField] TextMeshProUGUI pauseButtonText;
+
     [SerializeField] UIImageProgressBar creatorImageProgressBar;
     [SerializeField] UIImageProgressBar connectorImageProgressBar;
     CreatorBuilding currentBuilding;

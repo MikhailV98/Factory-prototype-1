@@ -19,10 +19,13 @@ public class CreatorBuilding : Building
     // Start is called before the first frame update
     void Start()
     {
+        Init();
+    }
+    void Init()
+    {
         buildingHUD = GetComponent<CreatorBuildingHUD>();
         UpdateHUD();
 
-        buildingUI = PlayerController.Instance.creatorBuildingUI;
     }
 
     void StartProducting()
@@ -121,6 +124,7 @@ public class CreatorBuilding : Building
     public override void OnSelect()
     {
         base.OnSelect();
+        buildingUI = PlayerController.Instance.creatorBuildingUI;
         buildingUI.SetCurrentBuilding(this);
         ActivateUIPanel();
     }

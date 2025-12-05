@@ -157,7 +157,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459863595291819083}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dab84ef9d8619844b9b9c19f7687a52a, type: 3}
   m_Name: 
@@ -168,6 +168,7 @@ MonoBehaviour:
   buildingUI: {fileID: 0}
   currentRecipe: {fileID: 11400000, guid: 7b1d3a5340aca1e4d913e2b10f7a677f, type: 2}
   buildingPower: 1
+  isWorking: 1
 --- !u!114 &-1142456308866299196
 MonoBehaviour:
   m_ObjectHideFlags: 0

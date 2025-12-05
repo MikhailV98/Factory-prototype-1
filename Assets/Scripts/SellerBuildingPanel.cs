@@ -21,6 +21,7 @@ public class SellerBuildingPanel : MonoBehaviour, IPointerEnterHandler, IPointer
         resourceImage.sprite = resource.Image;
         resourceText.text = resource.Name;
         moneyText.text = resource.Cost.ToString();
+        dropdown.FillDropDownList();
         dropdown.value = GameManager.FindCurrentResourceNumberByName(resource.Name);
         UpdatePauseButton();
     }

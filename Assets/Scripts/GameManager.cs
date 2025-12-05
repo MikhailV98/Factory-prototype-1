@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         resourcePanel.Init(resourceBank);
+        UpdateResourceUI();
     }
 
     //  Метод для начисления ресурса. Возвращает булевый результат - был ли ресурс передан в банк
@@ -97,4 +98,37 @@ public class GameManager : MonoBehaviour
                 return i;
         return 0;
     }
+    public int GetBuildingsCount(BuildingTypes buildingType)
+    {
+        //  TODO Реализовать подсчёт количества зданий определённого типа
+        Building[] buildingArr = GameObject.FindObjectsByType<Building>(FindObjectsSortMode.None);
+        int count=0;
+        foreach (Building building in buildingArr)
+            if (building.buildingType == buildingType)
+                count++;
+        return count;
+    }
+    public bool TryBuild(BuildingTypes buildingType)
+    {
+        int cost = GameMath.GetBuildingCost(GetBuildingObjectOfType(buildingType), GetBuildingsCount(buildingType));
+        if (cost <= moneyCount)
+        {
+            AddMoney(-cost);
+            return true;
+        }
+        else
+            return false;
+    }
+    public BuildingObject GetBuildingObjectOfType(BuildingTypes buildingType)
+    {
+        foreach (BuildingObject buildingObject in gameParams.buildingsList)
+            if (buildingObject.Prefab.GetComponent<Building>().buildingType == buildingType)
+                return buildingObject;
+
+        Debug.Log("Can't find BuildingObject of type " + buildingType);
+        return null;
+    }
+
+    public void ReturnCost(Building building)
+        => AddMoney(GameMath.GetBuildingCost(GetBuildingObjectOfType(building.buildingType), GetBuildingsCount(building.buildingType) - 1));
 }

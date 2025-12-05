@@ -9,10 +9,9 @@ public class UIResourceDropdown : TMP_Dropdown
     protected override void Start()
     {
         base.Start();
-        FillDropDownList();
     }
     //  Автозаполнение выпадающего списка всеми ресурсами
-    void FillDropDownList()
+    public void FillDropDownList()
     {
         List<OptionData> newList = new List<OptionData>();
         foreach (Resource r in GameManager.Instance.gameParams.resourcesList)

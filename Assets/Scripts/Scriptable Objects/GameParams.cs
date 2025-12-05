@@ -12,4 +12,6 @@ public class GameParams : ScriptableObject
     public List<Resource> resourcesList;//  Список используемых ресурсов
     public List<Recipe> creatorRecipes;
     public List<Recipe> connectorRecipes;
+    public List<BuildingObject> buildingsList;
+
 }

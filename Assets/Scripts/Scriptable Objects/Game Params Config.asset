@@ -15,6 +15,7 @@ MonoBehaviour:
   errorMaterial: {fileID: 2100000, guid: e6577227a3108af4ea0466093df7106e, type: 2}
   selectionMaterial: {fileID: 2100000, guid: 3063a5c8c3f648c4c98302f46cb89873, type: 2}
   emptyResource: {fileID: 11400000, guid: 4fdb74bddd71e614190256c7cbb2201c, type: 2}
+  costIncreasePerBuilding: 1.25
   resourcesList:
   - {fileID: 11400000, guid: 4fdb74bddd71e614190256c7cbb2201c, type: 2}
   - {fileID: 11400000, guid: e88bf20e891c5074eabb334cf6e4396d, type: 2}
@@ -39,3 +40,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ee45104295e498843bb16f1e4ca15888, type: 2}
   - {fileID: 11400000, guid: ef60741baabe77d4f9ab8f257a3d1656, type: 2}
   - {fileID: 11400000, guid: 52bd57c7dbb2d9b41bdfb1b2f7d989dc, type: 2}
+  buildingsList:
+  - {fileID: 11400000, guid: 93d8f2bc861e25140ae973096d0fc35a, type: 2}
+  - {fileID: 11400000, guid: a1725f3ed21f21f4d9647459e556a8d7, type: 2}
+  - {fileID: 11400000, guid: 3463fbc2a0301944fba76a4d61465a1f, type: 2}
