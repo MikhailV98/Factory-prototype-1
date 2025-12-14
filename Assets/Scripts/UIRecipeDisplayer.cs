@@ -67,7 +67,7 @@ public class UIRecipeDisplayer : MonoBehaviour
         GameObject newResourceImage = Instantiate(resourceImageTemplate, panel);
         newResourceImage.GetComponent<UIResourceImage>().Init(resource);
     }
-    List<RectTransform> CreatePanels(int count, RectTransform parentTransform)
+    public static List<RectTransform> CreatePanels(int count, RectTransform parentTransform)
     {
 
         List<RectTransform> panelsTransformList = new List<RectTransform>();

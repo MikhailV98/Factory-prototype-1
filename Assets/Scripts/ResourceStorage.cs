@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ResourceStorage
 {
@@ -16,7 +17,7 @@ public class ResourceStorage
             count = 0;
         }
     }
-
+    public static UnityEvent onStorageUpdate = new UnityEvent();
     List<StoredResource> resourceBank;
     UIResourcePanel resourcePanel;
     public int storageMaxCapacity = 50;
@@ -61,9 +62,10 @@ public class ResourceStorage
     {
         sr.counterText.text = sr.count.ToString();
         UpdateStorageSlider();
+        onStorageUpdate.Invoke();
     }
 
-    public int GetResourceCount(Resource r)=> FindResourceInBank(r).count;
+    public int GetResourceCount(Resource r) => r.CanBeStored ? FindResourceInBank(r).count : 0;
     
 
     //  Поиск данных о ресурсе в банке.

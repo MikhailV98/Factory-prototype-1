@@ -32,8 +32,7 @@ public class PlayerController : MonoBehaviour
 
     public UnityEvent onBuildingCreated = new UnityEvent();
     public UnityEvent onBuildingDestroyed = new UnityEvent();
-
-    //public GameParams gp;
+      
 
     // Start is called before the first frame update
     void Awake()
@@ -254,5 +253,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForNextFrameUnit();
         onBuildingDestroyed.Invoke();
     }
+    public void OpenMenu(RectTransform menu) => menu.gameObject.SetActive(!menu.gameObject.activeInHierarchy);
 }
 

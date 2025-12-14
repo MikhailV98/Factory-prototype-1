@@ -14,9 +14,29 @@ public class UIResourceImage : MonoBehaviour
         image.sprite = newSprite;
         text.text = newText;
     }
-    public void Init(Recipe.RecipeResource resource)
+    public void Init(Recipe.RecipeResource recipeResource)
     {
-        image.sprite = resource.resource.Image;
-        text.text = resource.count.ToString();
+        if (recipeResource != null && recipeResource.resource != null)
+        {
+            image.sprite = recipeResource.resource.Image;
+            text.text = recipeResource.count.ToString();
+        }
+        else InitWithNullResource();
     }
+    public void Init(Quest.QuestItem questItem)
+    {
+        if (questItem != null && questItem.resource != null)
+        {
+            image.sprite = questItem.resource.Image;
+            text.text = questItem.count.ToString();
+        }
+        else InitWithNullResource();
+    }
+    void InitWithNullResource()
+    {
+        image.sprite = GameManager.Instance.gameParams.emptyResource.Image;
+        text.text = "0";
+    }
+
+    public void ChangeText(string newText) => text.text = newText;
 }

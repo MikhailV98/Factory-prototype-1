@@ -9,6 +9,7 @@ public class GameParams : ScriptableObject
     public Material errorMaterial;      //  Материал при невозможности строительства
     public Material selectionMaterial;  //  Материал при выделении
     public Resource emptyResource;
+    public Sprite moneySprite;
     public List<Resource> resourcesList;//  Список используемых ресурсов
     public List<Recipe> creatorRecipes;
     public List<Recipe> connectorRecipes;

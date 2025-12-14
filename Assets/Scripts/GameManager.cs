@@ -83,6 +83,25 @@ public class GameManager : MonoBehaviour
         }
         return b;
     }
+    public bool TryTakeListOfResourceFromBank(List<Quest.QuestItem> resources)
+    {
+        //  Проверяем, все ли ресурсы на месте
+        bool b = true;
+        foreach (Quest.QuestItem r in resources)
+        {
+            if (!resourceBank.HasResource(r.resource, r.count))
+                b = false;
+        }
+        //  Если все ресурсы есть, забираем их
+        if (b)
+        {
+            foreach (Quest.QuestItem r in resources)
+                resourceBank.TakeResource(r.resource, r.count);
+        }
+        return b;
+    }
+
+    public int GetResourceCountFromBank(Resource r) => resourceBank.GetResourceCount(r);
 
     public void AddMoney(int newMoney)
     {
