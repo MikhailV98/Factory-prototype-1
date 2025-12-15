@@ -10,6 +10,14 @@ public class Building : MonoBehaviour
     [SerializeField] Material defaultMaterial;  //  Необходим для возвращения зданию цвета после снятия выделения и при строительстве
     public BuildingTypes buildingType;
 
+    public virtual SaveSystem.PlayerProfile.BuildingInfo ToBuildingInfo()
+    {
+        SaveSystem.PlayerProfile.BuildingInfo buildingInfo = new SaveSystem.PlayerProfile.BuildingInfo();
+        buildingInfo.buildingPosition = transform.position;
+        buildingInfo.buildingType = buildingType;
+        return buildingInfo;
+    }
+
     void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
@@ -17,8 +25,12 @@ public class Building : MonoBehaviour
 
     //  Методы выделения и снятия выделения с объектов - из общего только смена материала.
     //  Дочерние здания (как продуктовый, мб усиляющий) - переопределяют методы в соответствии со своими нуждами
-    public virtual void OnSelect() => meshRenderer.material = GameManager.Instance.gameParams.selectionMaterial;
-    public virtual void OnDeselect() => meshRenderer.material = defaultMaterial;
+    public virtual void OnSelect()  {meshRenderer.material = GameManager.Instance.gameParams.selectionMaterial;Debug.Log("building selected"); }
+    public virtual void OnDeselect()
+    { 
+        meshRenderer.material = defaultMaterial;
+        PlayerController.Instance.onBuildingUpdate.Invoke();
+    }
 
     public virtual void DeleteBuilding()
     {

@@ -30,7 +30,6 @@ public class UIButtonsPanel : MonoBehaviour
 
     void UpdatePanel()
     {
-        Debug.Log("Updating Panel");
         //  Update Buttons Values
         foreach (UIBuildingButton button in buttonsList)
             button.UpdateCost();

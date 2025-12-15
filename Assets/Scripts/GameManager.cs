@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] ResourceStorage resourceBank;
     [SerializeField] int resourceBankCapacity = 50;
 
+    //  РЕАЛИЗОВАТЬ АВТОСЕЙВ
+    public static UnityEvent onAutoSave = new UnityEvent();
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,17 +30,33 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            resourceBank = new ResourceStorage(resourceBankCapacity);
+            SaveSystem.LoadProfile();
+            InitializeResourceStorage();
+            moneyCount = SaveSystem.currentPlayerProfile.moneyCount;
         }
         else
         {
             Destroy(this); 
         }
     }
+    void InitializeResourceStorage()
+    {
+        if (SaveSystem.currentPlayerProfile.resourceStorage != null)
+        {
+            resourceBank = SaveSystem.currentPlayerProfile.resourceStorage;
+        }
+        else
+        {
+            resourceBank = new ResourceStorage(resourceBankCapacity);
+            SaveSystem.currentPlayerProfile.resourceStorage = resourceBank;
+        }
+    }
+
     private void Start()
     {
         resourcePanel.Init(resourceBank);
         UpdateResourceUI();
+        QuestSystem.Instance.Init();
     }
 
     //  Метод для начисления ресурса. Возвращает булевый результат - был ли ресурс передан в банк
@@ -62,6 +82,7 @@ public class GameManager : MonoBehaviour
     void UpdateResourceUI()
     {
         moneyText.text = moneyCount.ToString();
+        SaveSystem.currentPlayerProfile.moneyCount = moneyCount;
     }
 
     public bool TryTakeResourceFromBank(Resource r) => resourceBank.TakeResource(r, 1);

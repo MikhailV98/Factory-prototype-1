@@ -5,10 +5,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum PlayerState
 {
+    Loading,
     Building,
     Selecting,
     ChoosingResourceInPanel
@@ -32,18 +34,99 @@ public class PlayerController : MonoBehaviour
 
     public UnityEvent onBuildingCreated = new UnityEvent();
     public UnityEvent onBuildingDestroyed = new UnityEvent();
+    public UnityEvent onBuildingUpdate = new UnityEvent();
+    List<Building> buildingsList = new List<Building>();
       
 
-    // Start is called before the first frame update
     void Awake()
     {
         if (Instance == null)
             Instance = this;
         else
             Destroy(this);
+    }
 
+    private void Start()
+    {
+        if (SaveSystem.currentPlayerProfile.buildingsList != null)
+        {
+            Debug.Log("Start loading");
+            LoadBuildingsFromProfile();
+            Debug.Log("End loading");
+        }
+        else
+            currentState = PlayerState.Selecting;
+
+        onBuildingUpdate.AddListener(SaveBuildingsToProfile);
+    }
+    void LoadBuildingsFromProfile()
+    {
+        
+        Debug.Log("Starting loading, player state is " + PlayerController.Instance.currentState);
+        currentState = PlayerState.Loading;
+        Debug.Log("Before loading, player state is " + PlayerController.Instance.currentState);
+        foreach (SaveSystem.PlayerProfile.BuildingInfo building in SaveSystem.currentPlayerProfile.buildingsList)
+        {
+            Debug.Log("Loading building, player state is " + PlayerController.Instance.currentState);
+            switch (building.buildingType)
+            {
+                case BuildingTypes.Creator:
+                    {
+
+                        Debug.Log("Creating creator, player state is " + PlayerController.Instance.currentState);
+                        CreatorBuilding newBuilding = CreateBuildingOnPoint(building.buildingType, building.buildingPosition) as CreatorBuilding;
+                        newBuilding.ChangeRecipe(building.buildingRecipe);
+                        newBuilding.isWorking = building.isWorking;
+                        break;
+                    }
+                case BuildingTypes.Connector:
+                    {
+                        CreatorBuilding newBuilding = CreateBuildingOnPoint(building.buildingType, building.buildingPosition) as CreatorBuilding;
+                        newBuilding.ChangeRecipe(building.buildingRecipe);
+                        newBuilding.isWorking = building.isWorking;
+                        break;
+                    }
+                case BuildingTypes.Seller:
+                    {
+                        SellerBuilding newBuilding = CreateBuildingOnPoint(building.buildingType, building.buildingPosition) as SellerBuilding;
+                        newBuilding.ChangeResource(building.buildingResource);
+                        newBuilding.isWorking = building.isWorking;
+                        break;
+                    }
+                default:
+                    {
+                        Debug.LogError("Trying to load unexpected building");
+                        break;
+                    }
+            }
+            Debug.Log("Building complete, player state is " + PlayerController.Instance.currentState);
+        }
+
+        Debug.Log("End loading, player state is " + PlayerController.Instance.currentState);
         currentState = PlayerState.Selecting;
+        Debug.Log("Changing after loading, player state is " + PlayerController.Instance.currentState);
+    }
+    void SaveBuildingsToProfile()
+    {
+        List<SaveSystem.PlayerProfile.BuildingInfo> buildingInfoList = new List<SaveSystem.PlayerProfile.BuildingInfo>();
+        foreach (Building building in buildingsList)
+            buildingInfoList.Add(building.ToBuildingInfo());
 
+        SaveSystem.currentPlayerProfile.buildingsList = buildingInfoList;
+    }
+
+    Building CreateBuildingOnPoint(BuildingTypes buildingType, Vector3 buildingPosition)
+    {
+        Debug.Log("Preparing to build, player state is " + PlayerController.Instance.currentState);
+        PrepareToBuild(GameManager.Instance.gameParams.GetBuildingsDictionary()[buildingType]);
+        Building building = currentBuilding.GetComponent<Building>();
+        Debug.Log("Moving object, player state is " + PlayerController.Instance.currentState);
+        MoveBuildingToPoint(buildingPosition);
+        Debug.Log("Puting object, player state is " + PlayerController.Instance.currentState);
+        BuildObject();
+
+        Debug.Log("Building complete, player state is " + PlayerController.Instance.currentState);
+        return building;
     }
 
     // Update is called once per frame
@@ -143,7 +226,15 @@ public class PlayerController : MonoBehaviour
             ReleaseBuilding();
 
             onBuildingCreated.Invoke();
-            SelectBuilding(newBuilding);
+            
+            if (!buildingsList.Contains(newBuilding))
+                buildingsList.Add(newBuilding);
+
+            if (currentState != PlayerState.Loading)
+            {
+                SelectBuilding(newBuilding);
+                SaveBuildingsToProfile();
+            }
         }
     }
     void ReleaseBuilding()
@@ -151,7 +242,8 @@ public class PlayerController : MonoBehaviour
         currentBuildingHelper.RemoveComponent();
         currentBuildingHelper = null;
         currentBuilding = null;
-        currentState = PlayerState.Selecting;
+        if (currentState != PlayerState.Loading)
+            currentState = PlayerState.Selecting;
     }
 
     Building CheckBuildingClick()
@@ -198,7 +290,8 @@ public class PlayerController : MonoBehaviour
     {
         if (currentState != PlayerState.Building)
         {
-            currentState = PlayerState.Building;
+            if (currentState != PlayerState.Loading)
+                currentState = PlayerState.Building;
             currentBuilding = Instantiate(building);
             currentBuildingHelper = currentBuilding.GetComponent<BuildingHelper>();
         }
@@ -254,5 +347,11 @@ public class PlayerController : MonoBehaviour
         onBuildingDestroyed.Invoke();
     }
     public void OpenMenu(RectTransform menu) => menu.gameObject.SetActive(!menu.gameObject.activeInHierarchy);
+    public void ExitToMainMenu()
+    {
+        SaveSystem.SaveProfile();
+        SceneManager.LoadScene(0);
+    }
+
 }
 

@@ -27,6 +27,10 @@ public class SellerBuilding : Building
 
     private void Start()
     {
+        Init();
+    }
+    void Init()
+    {
         ui = GetComponent<SellerBuildingUI>();
         UpdateUI();
 
@@ -78,11 +82,24 @@ public class SellerBuilding : Building
     void UpdateProgressionSlider()
     {
         float value = Timer / timeToSale;
-        ui.UpdateSlider(value);
-        if (uiPanel.GetCurrentBuilding() == this)
-            uiPanel.UpdateProgressionSlider(value);
+        if (ui != null)
+            ui.UpdateSlider(value);
+        else
+        {
+            Init();
+            ui.UpdateSlider(value);
+        }
+
+        if (PlayerController.Instance.currentState != PlayerState.Loading && PlayerController.Instance.selectedBuilding == this)
+            if (uiPanel.GetCurrentBuilding() == this)
+                uiPanel.UpdateProgressionSlider(value);
     }
-    void UpdateUI() => ui.UpdateUI(currentResource);
+    void UpdateUI()
+    {
+
+        if (PlayerController.Instance.currentState != PlayerState.Loading)
+            ui.UpdateUI(currentResource); 
+    }
 
     //  При выделении зданий также открывается панель
     public override void OnSelect()
@@ -114,7 +131,8 @@ public class SellerBuilding : Building
     {
         currentResource = newResource;
         UpdateUI();
-        uiPanel.UpdatePanel(currentResource);
+        if (PlayerController.Instance.currentState != PlayerState.Loading)
+            uiPanel.UpdatePanel(currentResource);
         ResetTimer();
     }
     public void SwitchSellingState()
@@ -150,5 +168,12 @@ public class SellerBuilding : Building
         base.OnPlaced();
         if (wereWorkingBeforeMoving)
             ContinueSelling();
+    }
+    public override SaveSystem.PlayerProfile.BuildingInfo ToBuildingInfo()
+    {
+        SaveSystem.PlayerProfile.BuildingInfo buildingInfo = base.ToBuildingInfo();
+        buildingInfo.buildingResource = currentResource;
+        buildingInfo.isWorking = isWorking;
+        return buildingInfo;
     }
 }

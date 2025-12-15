@@ -15,4 +15,11 @@ public class GameParams : ScriptableObject
     public List<Recipe> connectorRecipes;
     public List<BuildingObject> buildingsList;
 
+    public Dictionary<BuildingTypes,GameObject> GetBuildingsDictionary()
+    {
+        Dictionary<BuildingTypes, GameObject> dictionary = new Dictionary<BuildingTypes, GameObject>();
+        foreach (BuildingObject buildingObj in buildingsList)
+            dictionary.Add(buildingObj.Prefab.GetComponent<Building>().buildingType, buildingObj.Prefab);
+        return dictionary;
+    }
 }

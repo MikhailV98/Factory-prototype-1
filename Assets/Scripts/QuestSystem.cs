@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class QuestSystem : MonoBehaviour
@@ -23,12 +24,11 @@ public class QuestSystem : MonoBehaviour
 
     [SerializeField] UIQuestMenu questMenu;
 
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            Init();
         }
         else
             Destroy(this);
@@ -36,17 +36,32 @@ public class QuestSystem : MonoBehaviour
 
     public void Init()
     {
-        if (activeQuests.Count <= 0)
-            for (int i = 0; i < questMenu.maxItemsCount; i++)
-            {
-                CreateQuest();
-            }
+        if (SaveSystem.currentPlayerProfile.questsList != null)
+        {
+            List<Quest> newQuestList = SaveSystem.currentPlayerProfile.questsList;
+            foreach (Quest q in newQuestList)
+                AddQuestToList(q);
+            SaveSystem.currentPlayerProfile.questsList = activeQuests;
+        }
+        else
+        {
+            if (activeQuests.Count <= 0)
+                for (int i = 0; i < questMenu.maxItemsCount; i++)
+                {
+                    CreateQuest();
+                }
+            SaveSystem.currentPlayerProfile.questsList = activeQuests;
+        }
+    }
+    void AddQuestToList(Quest quest)
+    {
+        activeQuests.Add(quest);
+        questMenu.AddNewQuest(quest);
     }
     void CreateQuest()
     {
         Quest newQuest = GenerateQuest();
-        activeQuests.Add(newQuest);
-        questMenu.AddNewQuest(newQuest);
+        AddQuestToList(newQuest);
     }
 
     public Quest GenerateQuest()

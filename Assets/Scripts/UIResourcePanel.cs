@@ -36,6 +36,7 @@ public class UIResourcePanel : MonoBehaviour
             if(r.CanBeStored)
                 AddResourcePanel(r);
         storage.ApplyResourcePanel(this);
+        storage.UpdateAllResourcePanels();
     }
     void AddResourcePanel(Resource r)
     {

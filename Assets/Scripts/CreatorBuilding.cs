@@ -25,7 +25,6 @@ public class CreatorBuilding : Building
     {
         buildingHUD = GetComponent<CreatorBuildingHUD>();
         UpdateHUD();
-
     }
 
     void StartProducting()
@@ -114,11 +113,21 @@ public class CreatorBuilding : Building
     {
         float value = productingProgression / currentRecipe.RecipeHardness;
         buildingHUD.UpdateSlider(value);
-        if (buildingUI.GetCurrentBuilding() == this)
-            buildingUI.UpdateProgressionSlider(value);
+        if (PlayerController.Instance.currentState != PlayerState.Loading&&PlayerController.Instance.selectedBuilding==this)
+            if (buildingUI.GetCurrentBuilding() == this)
+                buildingUI.UpdateProgressionSlider(value);
     }
 
-    void UpdateHUD() => buildingHUD.UpdateUI(currentRecipe);
+    void UpdateHUD()
+    {
+        if (buildingHUD != null)
+            buildingHUD.UpdateUI(currentRecipe);
+        else
+        {
+            Init();
+            buildingHUD.UpdateUI(currentRecipe);
+        }
+    }
 
     //  При выделении зданий также открывается панель
     public override void OnSelect()
@@ -150,9 +159,11 @@ public class CreatorBuilding : Building
 
     public void ChangeRecipe(Recipe newRecipe)
     {
+        Debug.Log("Updating recipe, player state is " + PlayerController.Instance.currentState);
         currentRecipe = newRecipe;
         UpdateHUD();
-        buildingUI.UpdateUI(currentRecipe);
+        if (PlayerController.Instance.currentState != PlayerState.Loading)
+            buildingUI.UpdateUI(currentRecipe);
         StopProducting();
     }
     public override void DeleteBuilding()
@@ -171,5 +182,13 @@ public class CreatorBuilding : Building
         base.OnPlaced();
         if (wereWorkingBeforeMoving)
             ContinueProducing();
+    }
+
+    public override SaveSystem.PlayerProfile.BuildingInfo ToBuildingInfo()
+    {
+        SaveSystem.PlayerProfile.BuildingInfo buildingInfo = base.ToBuildingInfo();
+        buildingInfo.buildingRecipe = currentRecipe;
+        buildingInfo.isWorking = isWorking;
+        return buildingInfo;
     }
 }

@@ -1,16 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
+[Serializable]
 public class ResourceStorage
 {
+    [Serializable]
     public class StoredResource
     {
         public Resource resource;
         public int count;
-        public TextMeshProUGUI counterText;
+        TextMeshProUGUI counterText;
+        public TextMeshProUGUI GetCounterText() => counterText;
+        public void ApplyCounterText(TextMeshProUGUI value) => counterText = value;
         public StoredResource(Resource r)
         {
             resource = r;
@@ -18,7 +23,7 @@ public class ResourceStorage
         }
     }
     public static UnityEvent onStorageUpdate = new UnityEvent();
-    List<StoredResource> resourceBank;
+    [SerializeField] List<StoredResource> resourceBank;
     UIResourcePanel resourcePanel;
     public int storageMaxCapacity = 50;
 
@@ -32,6 +37,7 @@ public class ResourceStorage
                 resourceBank.Add(new StoredResource(r));
         }
         storageMaxCapacity = maxCapacity;
+
     }
 
     public void AddResource(Resource r, int count)
@@ -39,6 +45,7 @@ public class ResourceStorage
         StoredResource sr = FindResourceInBank(r);
         sr.count += count;
         UpdateResourcePanel(sr);
+
     }
 
     public bool TakeResource(Resource r, int count)
@@ -48,6 +55,7 @@ public class ResourceStorage
         {
             sr.count -= count;
             UpdateResourcePanel(sr);
+
             return true;
         }
         else
@@ -60,9 +68,14 @@ public class ResourceStorage
     }
     void UpdateResourcePanel(StoredResource sr)
     {
-        sr.counterText.text = sr.count.ToString();
+        sr.GetCounterText().text = sr.count.ToString();
         UpdateStorageSlider();
         onStorageUpdate.Invoke();
+    }
+    public void UpdateAllResourcePanels()
+    {
+        foreach (StoredResource sr in resourceBank)
+            UpdateResourcePanel(sr);
     }
 
     public int GetResourceCount(Resource r) => r.CanBeStored ? FindResourceInBank(r).count : 0;
@@ -97,7 +110,7 @@ public class ResourceStorage
         => resourcePanel.UpdateStorageBar(GetTotalCount(), storageMaxCapacity);
 
     public void ApplyTextToStorage(Resource r, TextMeshProUGUI tmp) 
-        => FindResourceInBank(r).counterText = tmp;
+        => FindResourceInBank(r).ApplyCounterText(tmp);
     public void ApplyResourcePanel(UIResourcePanel newResourcePanel)
     { 
         resourcePanel = newResourcePanel;
