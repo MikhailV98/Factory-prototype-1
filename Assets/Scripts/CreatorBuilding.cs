@@ -15,6 +15,7 @@ public class CreatorBuilding : Building
     bool isProducting = false;  //  Выполняется ли какой-либо процесс
     public bool isWorking = true;  //  Работает ли здание в данный момент
     bool wereWorkingBeforeMoving = true;
+    [SerializeField] Vector3 ui_offset = new Vector3(300, 0, 100);
 
     // Start is called before the first frame update
     void Start()
@@ -146,8 +147,11 @@ public class CreatorBuilding : Building
     void ActivateUIPanel()
     {
         RectTransform uiRectTransform = (RectTransform)buildingUI.transform;
-        Vector3 position = Camera.main.WorldToScreenPoint(transform.position) + new Vector3(300,0,100);
-        uiRectTransform.position = position;
+        Vector3 buildingPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if ((buildingPosition.x + ui_offset.x + uiRectTransform.rect.width/2) > Camera.main.pixelWidth)
+            uiRectTransform.position = buildingPosition - ui_offset;
+        else
+            uiRectTransform.position = buildingPosition + ui_offset;
         buildingUI.gameObject.SetActive(true);
         buildingUI.UpdateUI(currentRecipe);
         buildingUI.UpdateProgressionSlider(productingProgression / currentRecipe.RecipeHardness);

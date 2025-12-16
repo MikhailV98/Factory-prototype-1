@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class SellerBuildingPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    //  Скрипт взаимодействия с панелью производящего здания
+    //  Скрипт взаимодействия с панелью продающего здания
     [SerializeField] Image resourceImage;
     [SerializeField] TextMeshProUGUI resourceText;
     [SerializeField] UIResourceDropdown dropdown;

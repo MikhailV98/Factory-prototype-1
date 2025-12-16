@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class CreatorBuildingHUD : BuildingHUD
 {
-    //  УСТАРЕВШИЙ ДЛЯ РЕСУРСОВ, ОБНОВИТЬ ДЛЯ РЕЦЕПТОВ
 
     //  Класс для UI вокруг производящего здания
     [SerializeField] Image resourceImage;           //  Иконка ресурса на здании

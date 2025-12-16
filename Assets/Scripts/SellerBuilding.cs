@@ -14,6 +14,7 @@ public class SellerBuilding : Building
     float timer = 0;
     public bool isWorking = true;
     bool wereWorkingBeforeMoving = true;
+    [SerializeField] Vector3 ui_offset = new Vector3(300, 0, 100);
     public float Timer
     {
         get => timer;
@@ -118,8 +119,11 @@ public class SellerBuilding : Building
     void ActivateUIPanel()
     {
         RectTransform uiRectTransform = (RectTransform)uiPanel.transform;
-        Vector3 position = Camera.main.WorldToScreenPoint(transform.position) + new Vector3(300, 0, 100);
-        uiRectTransform.position = position;
+        Vector3 buildingPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if ((buildingPosition.x + ui_offset.x + uiRectTransform.rect.width / 2) > Camera.main.pixelWidth)
+            uiRectTransform.position = buildingPosition - ui_offset;
+        else
+            uiRectTransform.position = buildingPosition + ui_offset;
         uiPanel.gameObject.SetActive(true);
         uiPanel.UpdatePanel(currentResource);
         uiPanel.UpdateProgressionSlider(Timer / timeToSale);
