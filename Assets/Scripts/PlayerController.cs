@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public UnityEvent onBuildingDestroyed = new UnityEvent();
     public UnityEvent onBuildingUpdate = new UnityEvent();
     List<Building> buildingsList = new List<Building>();
+    [SerializeField] AudioClip buildingSelectionSound;
       
 
     void Awake()
@@ -50,9 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         if (SaveSystem.currentPlayerProfile.buildingsList != null)
         {
-            Debug.Log("Start loading");
             LoadBuildingsFromProfile();
-            Debug.Log("End loading");
         }
         else
             currentState = PlayerState.Selecting;
@@ -61,19 +60,14 @@ public class PlayerController : MonoBehaviour
     }
     void LoadBuildingsFromProfile()
     {
-        
-        Debug.Log("Starting loading, player state is " + PlayerController.Instance.currentState);
         currentState = PlayerState.Loading;
-        Debug.Log("Before loading, player state is " + PlayerController.Instance.currentState);
         foreach (SaveSystem.PlayerProfile.BuildingInfo building in SaveSystem.currentPlayerProfile.buildingsList)
         {
-            Debug.Log("Loading building, player state is " + PlayerController.Instance.currentState);
             switch (building.buildingType)
             {
                 case BuildingTypes.Creator:
                     {
 
-                        Debug.Log("Creating creator, player state is " + PlayerController.Instance.currentState);
                         CreatorBuilding newBuilding = CreateBuildingOnPoint(building.buildingType, building.buildingPosition) as CreatorBuilding;
                         newBuilding.ChangeRecipe(building.buildingRecipe);
                         newBuilding.isWorking = building.isWorking;
@@ -99,12 +93,9 @@ public class PlayerController : MonoBehaviour
                         break;
                     }
             }
-            Debug.Log("Building complete, player state is " + PlayerController.Instance.currentState);
         }
 
-        Debug.Log("End loading, player state is " + PlayerController.Instance.currentState);
         currentState = PlayerState.Selecting;
-        Debug.Log("Changing after loading, player state is " + PlayerController.Instance.currentState);
     }
     void SaveBuildingsToProfile()
     {
@@ -117,15 +108,11 @@ public class PlayerController : MonoBehaviour
 
     Building CreateBuildingOnPoint(BuildingTypes buildingType, Vector3 buildingPosition)
     {
-        Debug.Log("Preparing to build, player state is " + PlayerController.Instance.currentState);
         PrepareToBuild(GameManager.Instance.gameParams.GetBuildingsDictionary()[buildingType]);
         Building building = currentBuilding.GetComponent<Building>();
-        Debug.Log("Moving object, player state is " + PlayerController.Instance.currentState);
         MoveBuildingToPoint(buildingPosition);
-        Debug.Log("Puting object, player state is " + PlayerController.Instance.currentState);
         BuildObject();
 
-        Debug.Log("Building complete, player state is " + PlayerController.Instance.currentState);
         return building;
     }
 
@@ -194,6 +181,7 @@ public class PlayerController : MonoBehaviour
         
         selectedBuilding = building;
         selectedBuilding.OnSelect();
+        GameManager.Instance.PlaySound(buildingSelectionSound);
     }
     void DeselectBuilding()
     {

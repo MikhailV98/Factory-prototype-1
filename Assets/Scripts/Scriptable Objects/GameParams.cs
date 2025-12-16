@@ -14,6 +14,8 @@ public class GameParams : ScriptableObject
     public List<Recipe> creatorRecipes;
     public List<Recipe> connectorRecipes;
     public List<BuildingObject> buildingsList;
+    public AudioClip openDropdownSound;
+    public AudioClip closeDropdownSound;
 
     public Dictionary<BuildingTypes,GameObject> GetBuildingsDictionary()
     {

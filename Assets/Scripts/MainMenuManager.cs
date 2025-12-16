@@ -75,6 +75,11 @@ public class MainMenuManager : MonoBehaviour
     //  Menu Buttons
     public void OpenGamePlayScene()
     {
+        StartCoroutine(MoveToNextScene());
+    }
+    IEnumerator MoveToNextScene()
+    {
+        yield return new WaitForSeconds(0.3f);
         SaveSystem.SaveSettings();
         SceneManager.LoadScene(1);
     }

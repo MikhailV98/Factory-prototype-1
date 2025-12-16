@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] ResourceStorage resourceBank;
     [SerializeField] int resourceBankCapacity = 50;
 
+    AudioSource audioSource;
+
     //  –≈¿À»«Œ¬¿“‹ ¿¬“Œ—≈…¬
     public static UnityEvent onAutoSave = new UnityEvent();
 
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
             SaveSystem.LoadProfile();
             InitializeResourceStorage();
             moneyCount = SaveSystem.currentPlayerProfile.moneyCount;
+            audioSource = GetComponent<AudioSource>();
         }
         else
         {
@@ -171,4 +174,10 @@ public class GameManager : MonoBehaviour
 
     public void ReturnCost(Building building)
         => AddMoney(GameMath.GetBuildingCost(GetBuildingObjectOfType(building.buildingType), GetBuildingsCount(building.buildingType) - 1));
+
+    public void PlaySound(AudioClip sound)
+    {
+        audioSource.clip = sound;
+        audioSource.Play();
+    }
 }

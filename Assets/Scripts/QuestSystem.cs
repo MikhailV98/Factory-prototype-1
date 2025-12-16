@@ -23,6 +23,7 @@ public class QuestSystem : MonoBehaviour
     }
 
     [SerializeField] UIQuestMenu questMenu;
+    [SerializeField] AudioClip questRewardAudio;
 
     private void Awake()
     {
@@ -122,6 +123,7 @@ public class QuestSystem : MonoBehaviour
                 CurrentQuestLevel += 0.5f;
                 questMenu.RemoveQuest(completedQuestPanel);
                 activeQuests.Remove(completedQuest);
+                GameManager.Instance.PlaySound(questRewardAudio);
 
                 CreateQuest();
             }

@@ -54,12 +54,14 @@ public class CreatorDropdown : TMP_Dropdown
     protected override GameObject CreateDropdownList(GameObject template)
     {
         PlayerController.Instance.currentState = PlayerState.ChoosingResourceInPanel;
+        GameManager.Instance.PlaySound(GameManager.Instance.gameParams.openDropdownSound);
         return base.CreateDropdownList(template);
     }
     protected override void DestroyDropdownList(GameObject dropdownList)
     {
         PlayerController.Instance.currentState = PlayerState.Selecting;
         PlayerController.Instance.ChangeRecipeOnSelectedBuilding(value);
+        GameManager.Instance.PlaySound(GameManager.Instance.gameParams.closeDropdownSound);
         base.DestroyDropdownList(dropdownList);
     }
 }
