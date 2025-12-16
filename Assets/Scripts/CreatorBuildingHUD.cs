@@ -9,6 +9,7 @@ public class CreatorBuildingHUD : BuildingHUD
     //  Класс для UI вокруг производящего здания
     [SerializeField] Image resourceImage;           //  Иконка ресурса на здании
     [SerializeField] Slider resourceProgressBar;    //  Прогрессбар ресурса на передней части
+    [SerializeField] UIResourceParticleEffect resourceParticleEffect;
 
     public void UpdateUI(Recipe recipe)
     {
@@ -22,5 +23,9 @@ public class CreatorBuildingHUD : BuildingHUD
     public void UpdateSlider(float value)
     {
         resourceProgressBar.value = value;
+    }
+    public void SpawnResourceEffect()
+    {
+        resourceParticleEffect.SpawnEffect(resourceImage.sprite);
     }
 }

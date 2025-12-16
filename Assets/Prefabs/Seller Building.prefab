@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 2059919049101104675}
   - component: {fileID: 1230086143942463980}
   - component: {fileID: 756892799835717824}
+  - component: {fileID: 868667146107572568}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -178,6 +179,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &868667146107572568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663053705281655549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf18ba8e8c8738949a9d5d9e8c952eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceEffectTime: 0.5
+  resourceEffectPeriod: 0.1
+  resourceEffectMaxHeight: 100
 --- !u!1 &2920029667356519079
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +759,7 @@ MonoBehaviour:
   currentResource: {fileID: 11400000, guid: 4fdb74bddd71e614190256c7cbb2201c, type: 2}
   resourcesPerSecond: 2
   isWorking: 1
+  ui_offset: {x: 300, y: 0, z: 100}
 --- !u!114 &3362768109232429705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,6 +774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceImage: {fileID: 3476780639454762175}
   resourceProgressBar: {fileID: 2072546146067610039}
+  resourceParticleEffect: {fileID: 868667146107572568}
 --- !u!1 &8275039133996358344
 GameObject:
   m_ObjectHideFlags: 0

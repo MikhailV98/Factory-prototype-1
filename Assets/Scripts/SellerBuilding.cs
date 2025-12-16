@@ -74,6 +74,7 @@ public class SellerBuilding : Building
             GameManager.Instance.AddMoney(currentResource.Cost);
             Timer = 0;
             isSelling = false;
+            ui.SpawnResourceEffect();
         }
     }
     void ResetTimer()

@@ -96,6 +96,7 @@ public class CreatorBuilding : Building
             if (GameManager.Instance.AddResourceToBank(currentRecipe.OutResource.resource, currentRecipe.OutResource.count))
             {
                 StopProducting();
+                buildingHUD.SpawnResourceEffect();
             }
         }
     }
@@ -163,7 +164,6 @@ public class CreatorBuilding : Building
 
     public void ChangeRecipe(Recipe newRecipe)
     {
-        Debug.Log("Updating recipe, player state is " + PlayerController.Instance.currentState);
         currentRecipe = newRecipe;
         UpdateHUD();
         if (PlayerController.Instance.currentState != PlayerState.Loading)

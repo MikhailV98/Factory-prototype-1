@@ -169,6 +169,7 @@ MonoBehaviour:
   currentRecipe: {fileID: 11400000, guid: 7b1d3a5340aca1e4d913e2b10f7a677f, type: 2}
   buildingPower: 1
   isWorking: 1
+  ui_offset: {x: 300, y: 0, z: 100}
 --- !u!114 &-1142456308866299196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceImage: {fileID: 3871486814407303243}
   resourceProgressBar: {fileID: 477916469137965419}
+  resourceParticleEffect: {fileID: 2805273503466013381}
 --- !u!1 &1181605466201023548
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +485,7 @@ GameObject:
   - component: {fileID: 8424748638973244832}
   - component: {fileID: 4701559760636217430}
   - component: {fileID: 2267456245112791178}
+  - component: {fileID: 2805273503466013381}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -573,6 +576,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2805273503466013381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4143594982986758847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf18ba8e8c8738949a9d5d9e8c952eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceEffectTime: 0.5
+  resourceEffectPeriod: 0.1
+  resourceEffectMaxHeight: 100
 --- !u!1 &7102166700322419394
 GameObject:
   m_ObjectHideFlags: 0

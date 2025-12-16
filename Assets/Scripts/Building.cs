@@ -25,7 +25,7 @@ public class Building : MonoBehaviour
 
     //  ћетоды выделени€ и сн€ти€ выделени€ с объектов - из общего только смена материала.
     //  ƒочерние здани€ (как продуктовый, мб усил€ющий) - переопредел€ют методы в соответствии со своими нуждами
-    public virtual void OnSelect()  {meshRenderer.material = GameManager.Instance.gameParams.selectionMaterial;Debug.Log("building selected"); }
+    public virtual void OnSelect()=>meshRenderer.material = GameManager.Instance.gameParams.selectionMaterial;
     public virtual void OnDeselect()
     { 
         meshRenderer.material = defaultMaterial;

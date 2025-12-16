@@ -9,6 +9,7 @@ public class SellerBuildingUI : BuildingHUD
 
     [SerializeField] Image resourceImage;           //  Иконка ресурса на здании
     [SerializeField] Slider resourceProgressBar;    //  Прогрессбар ресурса на передней части
+    [SerializeField] UIResourceParticleEffect resourceParticleEffect;
 
     public void UpdateUI(Resource resource)
     {
@@ -18,5 +19,9 @@ public class SellerBuildingUI : BuildingHUD
     public void UpdateSlider(float value)
     {
         resourceProgressBar.value = value;
+    }
+    public void SpawnResourceEffect()
+    {
+        resourceParticleEffect.SpawnEffect(GameManager.Instance.gameParams.moneySprite);
     }
 }
