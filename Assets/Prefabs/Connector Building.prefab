@@ -185,6 +185,9 @@ MonoBehaviour:
   resourceImage: {fileID: 3871486814407303243}
   resourceProgressBar: {fileID: 477916469137965419}
   resourceParticleEffect: {fileID: 2092836268444477624}
+  topHUDTransform: {fileID: 8732602993588264245}
+  creatorRecipeDisplayerPrefab: {fileID: 7435691259668199674, guid: 653367b2b02892c4fab353d0df97bd8c, type: 3}
+  connectorRecipeDisplayerPrefab: {fileID: 8844071814310999550, guid: 47724cb44d663ff4a945ed642991d90c, type: 3}
 --- !u!1 &1181605466201023548
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,6 +256,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6885520000409289539}
+  - {fileID: 7256331399195371405}
   m_Father: {fileID: 1123394717060758151}
   m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -501,17 +505,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4143594982986758847}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.03}
   m_LocalScale: {x: 0.001, y: 0.002, z: 0.002}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7256331399195371405}
+  m_Children: []
   m_Father: {fileID: 1123394717060758151}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.572}
-  m_SizeDelta: {x: 924, y: 525}
+  m_SizeDelta: {x: 924, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8424748638973244832
 Canvas:
@@ -653,15 +656,15 @@ RectTransform:
   m_GameObject: {fileID: 8291911381988708059}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1.5, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8732602993588264245}
+  m_Father: {fileID: 8243527698082834205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -234, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 107.1, y: -133.2}
+  m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6391153563143745494
 CanvasRenderer:
@@ -737,8 +740,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -144.8}
-  m_SizeDelta: {x: 160, y: 20}
+  m_AnchoredPosition: {x: -28.8, y: -144.8}
+  m_SizeDelta: {x: 125.22, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &477916469137965419
 MonoBehaviour:

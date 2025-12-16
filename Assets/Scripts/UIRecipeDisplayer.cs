@@ -9,6 +9,7 @@ public class UIRecipeDisplayer : MonoBehaviour
     [SerializeField] RectTransform outResourcesParent;
     [SerializeField] int maxResourcesInRow = 3;
     [SerializeField] GameObject resourceImageTemplate;
+    public bool isShowNumbers = true;
 
     Recipe currentRecipe;
 
@@ -56,16 +57,38 @@ public class UIRecipeDisplayer : MonoBehaviour
         for(int i = 0; i < resourcesList.Count; i++)
         {
             int numberInList = Mathf.FloorToInt((float)i / (float)maxResourcesInRow);
-            GameObject newResourceImage = Instantiate(resourceImageTemplate, panelsList[numberInList]);
-            newResourceImage.GetComponent<UIResourceImage>().Init(resourcesList[i]);
+            InstantiateImage(resourcesList[i], panelsList[numberInList]);
         }
     }
     void VisualizeResources(Recipe.RecipeResource resource, RectTransform parentTransform)
     {
         Transform panel = CreatePanels(1, parentTransform)[0];
 
-        GameObject newResourceImage = Instantiate(resourceImageTemplate, panel);
-        newResourceImage.GetComponent<UIResourceImage>().Init(resource);
+        InstantiateImage(resource, panel);
+    }
+    void InstantiateImage(Recipe.RecipeResource resource, Transform parent)
+    {
+        if (isShowNumbers)
+        {
+            GameObject newResourceImage = Instantiate(resourceImageTemplate, parent);
+            newResourceImage.GetComponent<UIResourceImage>().Init(resource);
+        }
+        else
+        {
+            GameObject newResourceImageGO = new GameObject();
+            newResourceImageGO.AddComponent<CanvasRenderer>();
+            Image newImageImage = newResourceImageGO.AddComponent<Image>();
+            newImageImage.sprite = resource.resource.Image;
+            newImageImage.preserveAspect = true;
+
+            RectTransform newResourceImageTransform = newResourceImageGO.transform as RectTransform;
+
+            newResourceImageTransform.SetParent(parent);
+            newResourceImageTransform.localPosition = Vector3.zero;
+            newResourceImageTransform.localRotation = Quaternion.Euler(Vector3.zero);
+            newResourceImageTransform.localScale = Vector3.one*1.5f;
+            
+        }
     }
     public static List<RectTransform> CreatePanels(int count, RectTransform parentTransform)
     {
@@ -75,12 +98,16 @@ public class UIRecipeDisplayer : MonoBehaviour
         {
             GameObject newPanel = new GameObject("HorizontalLayout");
             newPanel.transform.parent = parentTransform;
+            newPanel.transform.localScale = Vector3.one;
+            newPanel.transform.localPosition = Vector3.zero;
+            newPanel.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
             newPanel.AddComponent<CanvasRenderer>();
             HorizontalLayoutGroup horizontalLayoutGroup =  newPanel.AddComponent<HorizontalLayoutGroup>();
             horizontalLayoutGroup.childAlignment = TextAnchor.MiddleCenter;
             horizontalLayoutGroup.childControlWidth = false;
             horizontalLayoutGroup.childControlHeight = false;
-
+            
             panelsTransformList.Add((RectTransform)newPanel.transform);
         }
         return panelsTransformList;

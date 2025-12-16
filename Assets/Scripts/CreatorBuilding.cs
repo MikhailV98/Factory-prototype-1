@@ -25,6 +25,7 @@ public class CreatorBuilding : Building
     void Init()
     {
         buildingHUD = GetComponent<CreatorBuildingHUD>();
+        buildingHUD.Init(buildingType);
         UpdateHUD();
     }
 

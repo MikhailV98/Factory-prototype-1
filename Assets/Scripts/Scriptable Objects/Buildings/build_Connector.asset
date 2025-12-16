@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Connector
   Prefab: {fileID: 459863595291819083, guid: 97eb645fd22e86348ba81a9a114f0436, type: 3}
-  costBase: 5
+  costBase: 0
   costIncrement: 10
