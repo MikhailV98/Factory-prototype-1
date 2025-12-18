@@ -8,15 +8,21 @@ public class GameParams : ScriptableObject
     //  Конфиг основных параметров
     public Material errorMaterial;      //  Материал при невозможности строительства
     public Material selectionMaterial;  //  Материал при выделении
-    public Resource emptyResource;
-    public Sprite moneySprite;
+    public Resource emptyResource;  //  Пустой ресурс
+    public Sprite moneySprite;  //  Спрайт денег
     public List<Resource> resourcesList;//  Список используемых ресурсов
+    
+    //  Списки рецептов для зданий
     public List<Recipe> creatorRecipes;
     public List<Recipe> connectorRecipes;
+
     public List<BuildingObject> buildingsList;
+
+    //  Звуки
     public AudioClip openDropdownSound;
     public AudioClip closeDropdownSound;
 
+    //  Словарь для связи типа здания и префаба
     public Dictionary<BuildingTypes,GameObject> GetBuildingsDictionary()
     {
         Dictionary<BuildingTypes, GameObject> dictionary = new Dictionary<BuildingTypes, GameObject>();

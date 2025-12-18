@@ -13,6 +13,7 @@ public class UIRecipeDisplayer : MonoBehaviour
 
     Recipe currentRecipe;
 
+    //  Установка текущего отображаемого рецепта
     public void SetCurrentRecipe(Recipe recipe)
     {
         if (recipe != null)
@@ -21,6 +22,7 @@ public class UIRecipeDisplayer : MonoBehaviour
         }
     }
 
+    //  Метод обновления дисплеера
     public void Visualize()
     {
         ClearRecipeDisplay();
@@ -32,6 +34,7 @@ public class UIRecipeDisplayer : MonoBehaviour
         }
     }
 
+    //  2 перегрузки метода отображения - для списков ресурсов и для единичных
     void VisualizeResources(List<Recipe.RecipeResource> resourcesList,RectTransform parentTransform)
     {
         List<RectTransform> panelsList;
@@ -62,11 +65,37 @@ public class UIRecipeDisplayer : MonoBehaviour
     }
     void VisualizeResources(Recipe.RecipeResource resource, RectTransform parentTransform)
     {
-        Transform panel = CreatePanels(1, parentTransform)[0];
+        RectTransform panel = CreatePanels(1, parentTransform)[0];
 
         InstantiateImage(resource, panel);
     }
-    void InstantiateImage(Recipe.RecipeResource resource, Transform parent)
+
+    //  Метод создания панелей с компонентом горизонтальной разметки
+    public static List<RectTransform> CreatePanels(int count, RectTransform parentTransform)
+    {
+
+        List<RectTransform> panelsTransformList = new List<RectTransform>();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject newPanel = new GameObject("HorizontalLayout");
+            newPanel.transform.parent = parentTransform;
+            newPanel.transform.localScale = Vector3.one;
+            newPanel.transform.localPosition = Vector3.zero;
+            newPanel.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
+            newPanel.AddComponent<CanvasRenderer>();
+            HorizontalLayoutGroup horizontalLayoutGroup = newPanel.AddComponent<HorizontalLayoutGroup>();
+            horizontalLayoutGroup.childAlignment = TextAnchor.MiddleCenter;
+            horizontalLayoutGroup.childControlWidth = false;
+            horizontalLayoutGroup.childControlHeight = false;
+
+            panelsTransformList.Add((RectTransform)newPanel.transform);
+        }
+        return panelsTransformList;
+    }
+
+    //  Метод создаёт изображения в зависимости от настройки дисплеера - добавляет либо статичные картинки, либо картинки с подписью
+    void InstantiateImage(Recipe.RecipeResource resource, RectTransform parent)
     {
         if (isShowNumbers)
         {
@@ -90,29 +119,8 @@ public class UIRecipeDisplayer : MonoBehaviour
             
         }
     }
-    public static List<RectTransform> CreatePanels(int count, RectTransform parentTransform)
-    {
-
-        List<RectTransform> panelsTransformList = new List<RectTransform>();
-        for(int i = 0; i < count; i++)
-        {
-            GameObject newPanel = new GameObject("HorizontalLayout");
-            newPanel.transform.parent = parentTransform;
-            newPanel.transform.localScale = Vector3.one;
-            newPanel.transform.localPosition = Vector3.zero;
-            newPanel.transform.localRotation = Quaternion.Euler(Vector3.zero);
-
-            newPanel.AddComponent<CanvasRenderer>();
-            HorizontalLayoutGroup horizontalLayoutGroup =  newPanel.AddComponent<HorizontalLayoutGroup>();
-            horizontalLayoutGroup.childAlignment = TextAnchor.MiddleCenter;
-            horizontalLayoutGroup.childControlWidth = false;
-            horizontalLayoutGroup.childControlHeight = false;
-            
-            panelsTransformList.Add((RectTransform)newPanel.transform);
-        }
-        return panelsTransformList;
-    }
-
+    
+    //  Очистка дисплеера
     void ClearRecipeDisplay()
     {
         if (inResourcesParent != null)

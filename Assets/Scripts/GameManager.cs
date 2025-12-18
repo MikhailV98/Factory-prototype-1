@@ -10,25 +10,25 @@ public class GameManager : MonoBehaviour
     //  Скрипт для взаимодействия объектов
     //  Также предоставляет необходимые доступы
 
-    public static GameManager Instance;
+    public static GameManager Instance; //  Singleton для доступа при необходимости
     public GameParams gameParams;   //  Конфиг основных параметров
 
+
     [SerializeField] TextMeshProUGUI moneyText;
-    public UIResourcePanel resourcePanel;
+    public UIResourcePanel resourcePanel;   //  Ссылка на панель ресурсов
 
     [SerializeField] int moneyCount = 0;
-    [SerializeField] ResourceStorage resourceBank;
-    [SerializeField] int resourceBankCapacity = 50;
+    [SerializeField] ResourceStorage resourceBank;  //  Хранилище ресурсов
+    [SerializeField] int resourceBankCapacity = 50; //  Максимальная вместимость хранилища ресурсов
 
-    AudioSource audioSource;
+    AudioSource audioSource;    //  Источник звуков, вызываемых кодом
 
     //  РЕАЛИЗОВАТЬ АВТОСЕЙВ
     public static UnityEvent onAutoSave = new UnityEvent();
 
-    // Start is called before the first frame update
     void Awake()
     {
-        //  Реализация Singleton
+        //  Реализация Singleton и загрузка профиля
         if (Instance == null)
         {
             Instance = this;
@@ -42,8 +42,10 @@ public class GameManager : MonoBehaviour
             Destroy(this); 
         }
     }
+    //  Инициализация хранилища ресурсов
     void InitializeResourceStorage()
     {
+        //  Либо берём из сохранения, либо создаём новый
         if (SaveSystem.currentPlayerProfile.resourceStorage != null)
         {
             resourceBank = SaveSystem.currentPlayerProfile.resourceStorage;
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //  Инициализация панели ресурсов и системы квестов
         resourcePanel.Init(resourceBank);
         UpdateResourceUI();
         QuestSystem.Instance.Init();
@@ -82,12 +85,15 @@ public class GameManager : MonoBehaviour
         else return false;
     }
 
+    //  Обновление счётчика денег
     void UpdateResourceUI()
     {
         moneyText.text = moneyCount.ToString();
         SaveSystem.currentPlayerProfile.moneyCount = moneyCount;
     }
 
+    //  Методы проверки возможности забора определённых ресурсов из банка
+    //  - Возвращение true означает, что ресурсы УЖЕ списаны
     public bool TryTakeResourceFromBank(Resource r) => resourceBank.TakeResource(r, 1);
     public bool TryTakeResourceFromBank(Resource r, int count) => resourceBank.TakeResource(r, count);
     public bool TryTakeListOfResourceFromBank(List<Recipe.RecipeResource> resources)
@@ -125,14 +131,17 @@ public class GameManager : MonoBehaviour
         return b;
     }
 
+    //  Получение количества определённых типов ресурсов
     public int GetResourceCountFromBank(Resource r) => resourceBank.GetResourceCount(r);
 
+    //  Изменение количества денег
     public void AddMoney(int newMoney)
     {
         moneyCount += newMoney;
         UpdateResourceUI();
     }
 
+    //  Поиск положения определённого ресурса в общем списке ресурсов (для Dropdown продающего здания)
     public static int FindCurrentResourceNumberByName(string name)
     {
         List<Resource> resourceList = Instance.gameParams.resourcesList;
@@ -141,6 +150,8 @@ public class GameManager : MonoBehaviour
                 return i;
         return 0;
     }
+
+    //  Получение общего количества зданий данного типа
     public int GetBuildingsCount(BuildingTypes buildingType)
     {
         //  TODO Реализовать подсчёт количества зданий определённого типа
@@ -151,6 +162,8 @@ public class GameManager : MonoBehaviour
                 count++;
         return count;
     }
+    
+    //  Проверка, хватает ли у нас денег для постройки здания указанного типа
     public bool TryBuild(BuildingTypes buildingType)
     {
         int cost = GameMath.GetBuildingCost(GetBuildingObjectOfType(buildingType), GetBuildingsCount(buildingType));
@@ -162,6 +175,8 @@ public class GameManager : MonoBehaviour
         else
             return false;
     }
+
+    //  Получение объекта здания по его типу
     public BuildingObject GetBuildingObjectOfType(BuildingTypes buildingType)
     {
         foreach (BuildingObject buildingObject in gameParams.buildingsList)
@@ -172,9 +187,11 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    //  Возврат стоимости при отмене строительства здания
     public void ReturnCost(Building building)
         => AddMoney(GameMath.GetBuildingCost(GetBuildingObjectOfType(building.buildingType), GetBuildingsCount(building.buildingType) - 1));
 
+    //  Проигрывание звука
     public void PlaySound(AudioClip sound)
     {
         audioSource.clip = sound;

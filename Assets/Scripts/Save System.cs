@@ -10,12 +10,17 @@ public static class SaveSystem
     //  Paths
     public static readonly string[] player_save_paths = { "/saves/save1.json", "/saves/save2.json", "/saves/save3.json" };
     public static readonly string player_setting_path = "/saves/settings.json";
-    public static int CurrentPlayerProfileNumber = 0;
-    public static PlayerProfile currentPlayerProfile;
+
+    public static int CurrentPlayerProfileNumber = 0;   //  Текущий номер профиля (0-2)
+    public static PlayerProfile currentPlayerProfile;   //  Текущий профиль
+    
+    //  Ивенты взаимодействия с системой сохранений
     public static UnityEvent onSaveProfile;
     public static UnityEvent onLoadProfile;
-    public static PlayerSettings playerSettings;
 
+    public static PlayerSettings playerSettings;    //  Настройки профиля
+
+    //  Загрузка профиля из файла по текущему номеру профиля
     public static void LoadProfile()
     {
         string currentDataPath = GetActualPathOfCurrentProfile();
@@ -29,6 +34,7 @@ public static class SaveSystem
             currentPlayerProfile = new PlayerProfile();
         }
     }
+    //  Сохранение профиля в файл
     public static void SaveProfile()
     {
         string currentDataPath = GetActualPathOfCurrentProfile();
@@ -38,6 +44,8 @@ public static class SaveSystem
 
         File.WriteAllText(currentDataPath, jsonSaveData);
     }
+
+    //  Загрузка настроек из файла
     public static void LoadSettings()
     {
         string currentDataPath = GetActualPathOfSettings();
@@ -52,6 +60,7 @@ public static class SaveSystem
             playerSettings = new PlayerSettings(0);
         }
     }
+    //  Сохранение настроек в файл
     public static void SaveSettings()
     {
         string currentDataPath = GetActualPathOfSettings();
@@ -75,7 +84,7 @@ public static class SaveSystem
     public class PlayerProfile
     {
         [Serializable]
-        public class BuildingInfo
+        public class BuildingInfo   //  Класс информации о здании
         {
             public BuildingTypes buildingType;
             public Recipe buildingRecipe;
@@ -99,6 +108,7 @@ public static class SaveSystem
 
     }
     
+    //  Класс настроек
     public class PlayerSettings
     {
         public int currentProfileNumber = 0;

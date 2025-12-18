@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CreatorBuilding : Building
 {
+    //  Скрипт отвечает за производящее и перерабатывающее здания
+    
     public CreatorBuildingHUD buildingHUD;
     public CreatorBuildingUI buildingUI;
 
@@ -29,11 +31,73 @@ public class CreatorBuilding : Building
         UpdateHUD();
     }
 
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isWorking && currentRecipe.CanBeProduced)
+        {
+            if (isProducting)
+                Production();
+            else
+                StartProducting();
+        }
+    }
+
+    /*-----Производство-----*/
+    //  Основной метод производства
+    void Production()
+    {
+        if (productingProgression < currentRecipe.RecipeHardness)
+        {
+            AddProgression(buildingPower * Time.deltaTime);
+            CheckProductionCompletion();
+        }
+        else if (productingProgression >= currentRecipe.RecipeHardness)
+            CheckProductionCompletion();
+    }
+    //  Проверка на завершение производства
+    void CheckProductionCompletion()
+    {
+        //  Если набрали достаточно очков прогрессии для данного ресурса, то выдаём его
+        if (productingProgression >= currentRecipe.RecipeHardness)
+        {
+            if (GameManager.Instance.AddResourceToBank(currentRecipe.OutResource.resource, currentRecipe.OutResource.count))
+            {
+                StopProducting();
+                buildingHUD.SpawnResourceEffect();
+            }
+        }
+    }
+
+    //  Метод для смены рецепта
+    public void ChangeRecipe(Recipe newRecipe)
+    {
+        currentRecipe = newRecipe;
+        UpdateHUD();
+        if (PlayerController.Instance.currentState != PlayerState.Loading)
+            buildingUI.UpdateUI(currentRecipe);
+        StopProducting();
+    }
+
+    //  Прогрессия производства
+    void AddProgression(float value)
+    {
+        productingProgression += value;
+        UpdateProgressionSlider();
+    }
+    void ResetProgression()
+    {
+        productingProgression = 0;
+        UpdateProgressionSlider();
+    }
+
+    /*-----Управление производством-----*/
     void StartProducting()
     {
         if (currentRecipe != null)
         {
-            if (currentRecipe.recipeType==RecipeType.ZeroToOne)
+            if (currentRecipe.recipeType == RecipeType.ZeroToOne)
             {
                 isProducting = true;
             }
@@ -58,69 +122,23 @@ public class CreatorBuilding : Building
         else
             ContinueProducing();
     }
-    public void PauseProducting()
-    {
-        isWorking = false;
-    }
-    public void ContinueProducing()
-    {
-        isWorking = true;
-    }
+    public void PauseProducting() => isWorking = false;
+    public void ContinueProducing() => isWorking = true;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (isWorking && currentRecipe.CanBeProduced)
-        {
-            if (isProducting)
-                Production();
-            else
-                StartProducting();
-        }
-    }
-    void Production()
-    {
-        if (productingProgression < currentRecipe.RecipeHardness)
-        {
-            AddProgression(buildingPower * Time.deltaTime);
-            CheckProductionCompletion();
-        }
-        else if (productingProgression >= currentRecipe.RecipeHardness)
-            CheckProductionCompletion();
-    }
-
-    void CheckProductionCompletion()
-    {
-        //  Если набрали достаточно очков прогрессии для данного ресурса, то выдаём его
-        if (productingProgression >= currentRecipe.RecipeHardness)
-        {
-            if (GameManager.Instance.AddResourceToBank(currentRecipe.OutResource.resource, currentRecipe.OutResource.count))
-            {
-                StopProducting();
-                buildingHUD.SpawnResourceEffect();
-            }
-        }
-    }
-    //  Прогрессия производства
-    void AddProgression(float value)
-    {
-        productingProgression += value;
-        UpdateProgressionSlider();
-    }
-    void ResetProgression()
-    {
-        productingProgression = 0;
-        UpdateProgressionSlider();
-    }
+    /*-----Взаимодействие с UI-----*/
+    //  Обновление прогресс баров
     void UpdateProgressionSlider()
     {
         float value = productingProgression / currentRecipe.RecipeHardness;
+        //  HUD
         buildingHUD.UpdateSlider(value);
+
+        //  Окно здания (если оно открыто)
         if (PlayerController.Instance.currentState != PlayerState.Loading&&PlayerController.Instance.selectedBuilding==this)
             if (buildingUI.GetCurrentBuilding() == this)
                 buildingUI.UpdateProgressionSlider(value);
     }
-
+    //  Обновление HUD
     void UpdateHUD()
     {
         if (buildingHUD != null)
@@ -130,20 +148,6 @@ public class CreatorBuilding : Building
             Init();
             buildingHUD.UpdateUI(currentRecipe);
         }
-    }
-
-    //  При выделении зданий также открывается панель
-    public override void OnSelect()
-    {
-        base.OnSelect();
-        buildingUI = PlayerController.Instance.creatorBuildingUI;
-        buildingUI.SetCurrentBuilding(this);
-        ActivateUIPanel();
-    }
-    public override void OnDeselect()
-    {
-        base.OnDeselect();
-        DeactivateUIPanel();
     }
 
     void ActivateUIPanel()
@@ -163,14 +167,22 @@ public class CreatorBuilding : Building
         buildingUI.gameObject.SetActive(false);
     }
 
-    public void ChangeRecipe(Recipe newRecipe)
+    /*-----Переопределения базовых методов-----*/
+    
+    //  При выделении зданий также открывается панель
+    public override void OnSelect()
     {
-        currentRecipe = newRecipe;
-        UpdateHUD();
-        if (PlayerController.Instance.currentState != PlayerState.Loading)
-            buildingUI.UpdateUI(currentRecipe);
-        StopProducting();
+        base.OnSelect();
+        buildingUI = PlayerController.Instance.creatorBuildingUI;
+        buildingUI.SetCurrentBuilding(this);
+        ActivateUIPanel();
     }
+    public override void OnDeselect()
+    {
+        base.OnDeselect();
+        DeactivateUIPanel();
+    }
+
     public override void DeleteBuilding()
     {
         DeactivateUIPanel();
